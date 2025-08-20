@@ -55,4 +55,4 @@
 
 插件维护了一个名为 `onlineTimeBase.onlineTimeCache` 的缓存映射：
 ```kotlin
-ConcurrentHashMap<UUID, Pair<String, Int>>
+ConcurrentHashMap<String,OnlineTimeData>
