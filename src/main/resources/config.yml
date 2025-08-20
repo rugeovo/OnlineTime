@@ -1,0 +1,10 @@
+#数据库的基本配置
+#群组服，要实现数据同步 必须开启数据库!!
+#并连接到一个 数据库
+database:
+  enable: true
+  host: localhost
+  port: 3306
+  user: root
+  password: Sjs3159491994.
+  database: minecraft
