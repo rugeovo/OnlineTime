@@ -23,7 +23,7 @@
 
 ### 示例：
 
-- `%onlineTime_HH时mm分%` → 输出为类似 `"2时45分"`
+- `%onlineTime_HH时%` → 输出为类似 `"2时"`
 - `%onlineTime_SS秒%` → 输出为 `"994秒"`
 - `%onlineTime_HH小时%` → 输出为 `"1小时"`
 
