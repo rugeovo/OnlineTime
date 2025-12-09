@@ -1,10 +1,23 @@
-#数据库的基本配置
-#群组服，要实现数据同步 必须开启数据库!!
-#并连接到一个 数据库
+# 数据库基本配置
+# 群组服要实现数据同步，必须开启数据库并连接到同一个数据库
 database:
+  # 是否启用数据库（单服也建议开启以防数据丢失）
   enable: true
+
+  # 数据库主机地址
+  # 本地：localhost
+  # 远程：如 123.45.67.89
   host: localhost
+
+  # 数据库端口（MySQL 默认 3306）
   port: 3306
+
+  # 数据库用户名
   user: root
-  password: Sjs3159491994.
+
+  # 数据库密码
+  password: your_password_here
+
+  # 数据库名称
+  # 建议使用独立数据库，如 minecraft_online_time
   database: minecraft

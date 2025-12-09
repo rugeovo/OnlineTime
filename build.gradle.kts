@@ -20,7 +20,7 @@ taboolib {
         )
     }
     version {
-        taboolib = "6.2.3-5297ae6"
+        taboolib = "6.2.4-abd325ee"
         coroutines = "1.8.1"
     }
 }
