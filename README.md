@@ -20,33 +20,6 @@
 - 🌐 **群组服支持**：MySQL 共享数据，跨服同步
 - 🎨 **灵活格式**：自定义时间显示（小时/分钟/秒）
 
----
-
-## 🚀 快速开始
-
-### 安装要求
-
-- **Minecraft 服务端**：Bukkit / Spigot / Paper (1.12.2 - 1.21.4)
-- **前置插件**：[PlaceholderAPI](https://www.spigotmc.org/resources/placeholderapi.6245/)
-- **数据库**（推荐）：MySQL 5.7+ / MariaDB 10.2+
-
-### 安装步骤
-
-1. 将 `OnlineTime.jar` 放入 `plugins/` 目录
-2. 启动服务器生成配置文件
-3. 编辑 `plugins/OnlineTime/config.yml` 配置数据库
-4. 重启服务器完成加载
-
-```yaml
-# config.yml 配置示例
-database:
-  enable: true                    # 是否启用数据库（强烈推荐）
-  host: localhost                 # 数据库地址
-  port: 3306                      # 数据库端口
-  user: minecraft                 # 数据库用户
-  password: your_secure_password  # 数据库密码
-  database: minecraft             # 数据库名
-```
 
 ---
 
@@ -164,44 +137,6 @@ OnlineTime/
 
 ---
 
-## 📚 文档索引
-
-- **[使用文档](./USAGE.md)** - 详细的配置、使用和故障排查
-- **[设计文档](./DESIGN.md)** - 技术架构与实现原理
-- **[许可证](./LICENSE)** - 开源许可协议
-
----
-
-## 💡 使用场景
-
-### 计分板显示
-```yaml
-# DeluxeScoreboard 配置
-lines:
-  - '&e今日在线'
-  - '&7%onlineTime_HH%小时%onlineTime_mm%分'
-```
-
-### 称号系统
-```yaml
-# PlayerTitle 配置
-title_veteran:
-  display: '&6老玩家 &7(100h+)'
-  condition: '%onlineTime_HH%' >= 100
-```
-
-### 在线奖励
-```yaml
-# ConditionalCommands 配置
-daily_reward:
-  condition: '%onlineTime_HH%' >= 2
-  commands:
-    - 'give %player% diamond 5'
-    - 'tell %player% &a感谢你今日在线2小时！'
-```
-
----
-
 ## 🤝 贡献指南
 
 欢迎提交 Issue 和 Pull Request！
@@ -222,20 +157,3 @@ daily_reward:
 - 每一行代码都必须有明确的价值
 
 ---
-
-## 📄 许可证
-
-本项目采用自定义许可证，详见 [LICENSE](./LICENSE) 文件。
-
----
-
-## 🔗 相关链接
-
-- **Taboolib 框架**：https://github.com/TabooLib/taboolib
-- **PlaceholderAPI**：https://github.com/PlaceholderAPI/PlaceholderAPI
-- **问题反馈**：https://github.com/yourusername/OnlineTime/issues
-
----
-
-**"Talk is cheap. Show me the code."**
-*— Linus Torvalds*
