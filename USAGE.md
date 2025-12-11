@@ -1,22 +1,15 @@
-# OnlineTime 使用文档
-
-> 详细的配置、使用和故障排查指南
-
----
-
 ## 目录
 
-1. [安装指南](#1-安装指南)
-2. [配置说明](#2-配置说明)
-3. [占位符使用](#3-占位符使用)
-4. [应用场景](#4-应用场景)
-5. [群组服配置](#5-群组服配置)
-6. [常见问题](#6-常见问题)
-7. [故障排查](#7-故障排查)
+1. [安装指南](#安装指南)
+2. [配置说明](#配置说明)
+3. [占位符使用](#占位符使用)
+4. [群组服配置](#群组服配置)
+5. [常见问题](#常见问题)
+6. [故障排查](#故障排查)
 
 ---
 
-## 1. 安装指南
+## 安装指南
 
 ### 1.1 前置要求
 
@@ -24,9 +17,10 @@
 - Minecraft 服务端：Bukkit / Spigot / Paper (1.12.2 - 1.21.4)
 - Java 版本：Java 8 或更高
 - PlaceholderAPI：[下载链接](https://www.spigotmc.org/resources/placeholderapi.6245/)
+- 理论支持全核心服务端（未测试）
 
 **推荐（用于数据持久化）：**
-- MySQL 5.7+ 或 MariaDB 10.2+
+- MySQL 5.7+
 
 ### 1.2 安装步骤
 
@@ -47,7 +41,7 @@
 
 ---
 
-## 2. 配置说明
+## 配置说明
 
 ### 2.1 配置文件位置
 
@@ -76,7 +70,6 @@ database:
   user: root
 
   # 数据库密码
-  # ⚠️ 注意：请勿将真实密码上传至公开仓库
   # 建议使用配置模板 (config.example.yml) + .gitignore
   password: your_password_here
 
@@ -85,37 +78,9 @@ database:
   database: minecraft
 ```
 
-### 2.3 安全配置建议
-
-#### ❌ 错误做法
-```yaml
-password: MyRealPassword123  # 不要直接写真实密码
-```
-
-#### ✅ 正确做法
-
-**方案 1：使用配置模板**
-```bash
-# 创建示例配置
-cp config.yml config.example.yml
-
-# 修改 config.example.yml 中的密码为占位符
-password: change_me_before_use
-
-# 在 .gitignore 中排除真实配置
-echo "config.yml" >> .gitignore
-
-# 只提交 config.example.yml 到版本控制
-```
-
-**方案 2：本地环境变量（需修改代码）**
-```yaml
-password: ${DB_PASSWORD}  # 从环境变量读取
-```
-
 ---
 
-## 3. 占位符使用
+## 占位符使用
 
 ### 3.1 基本语法
 
@@ -160,84 +125,9 @@ val remainSeconds = totalSeconds % 60           // 余数秒
 
 ---
 
-## 4. 应用场景
+## 群组服配置
 
-### 4.1 计分板显示
-
-**使用插件：** DeluxeScoreboard / FeatherBoard
-
-```yaml
-# DeluxeScoreboard 配置示例
-lines:
-  - '&e━━━━━━━━━━━━━━━'
-  - '&6今日在线'
-  - '&7%onlineTime_HH%小时%onlineTime_mm%分'
-  - '&e━━━━━━━━━━━━━━━'
-```
-
-### 4.2 聊天前缀/后缀
-
-**使用插件：** LuckPerms + PlaceholderAPI
-
-```bash
-# 为 VIP 组添加在线时长后缀
-/lp group vip meta setsuffix " &7[在线%onlineTime_HH%h]"
-
-# 查看效果
-/lp group vip info
-```
-
-### 4.3 称号系统
-
-**使用插件：** PlayerTitle
-
-```yaml
-# 在线时长称号配置
-titles:
-  newbie:
-    display: '&7萌新 &8(< 10h)'
-    condition: '%onlineTime_HH%' < 10
-
-  player:
-    display: '&a玩家 &8(10-50h)'
-    condition: '%onlineTime_HH%' >= 10 and '%onlineTime_HH%' < 50
-
-  veteran:
-    display: '&6老玩家 &8(50-100h)'
-    condition: '%onlineTime_HH%' >= 50 and '%onlineTime_HH%' < 100
-
-  legend:
-    display: '&c传奇 &8(100h+)'
-    condition: '%onlineTime_HH%' >= 100
-```
-
-### 4.4 在线奖励
-
-**使用插件：** ConditionalCommands
-
-```yaml
-# 每日在线奖励配置
-commands:
-  # 在线 2 小时奖励
-  online_2h:
-    condition: '%onlineTime_HH%' == 2
-    commands:
-      - 'give %player% diamond 5'
-      - 'tell %player% &a感谢你今日在线2小时！奖励钻石×5'
-
-  # 在线 5 小时奖励
-  online_5h:
-    condition: '%onlineTime_HH%' == 5
-    commands:
-      - 'give %player% emerald 10'
-      - 'tell %player% &a感谢你今日在线5小时！奖励绿宝石×10'
-```
-
----
-
-## 5. 群组服配置
-
-### 5.1 什么是群组服
+### 4.1 什么是群组服
 
 群组服是指在同一台（或多台）机器上运行多个 Minecraft 服务器，通过不同端口区分：
 
@@ -250,7 +140,7 @@ commands:
 
 玩家可以在这些子服之间切换，但**同一时间只能在一个子服在线**。
 
-### 5.2 群组服数据同步原理
+### 4.2 群组服数据同步原理
 
 ```
 玩家 A 的游戏流程：
@@ -271,7 +161,7 @@ commands:
 - 每个子服只统计在**本服**在线的玩家
 - 数据库中的 `second` 字段累计所有子服的在线时间
 
-### 5.3 群组服配置步骤
+### 4.3 群组服配置步骤
 
 #### 步骤 1：准备数据库
 
@@ -333,7 +223,7 @@ database:
 # 查看日志确认数据库连接成功
 ```
 
-### 5.4 群组服常见误区
+### 4.4 群组服常见误区
 
 ❌ **错误理解：** "玩家可能同时在多个子服在线，会导致数据冲突"
 ✅ **正确理解：** 玩家只能同时在一个子服在线，不存在并发写入冲突
@@ -343,7 +233,7 @@ database:
 
 ---
 
-## 6. 常见问题
+## 常见问题
 
 ### Q1：占位符显示为 "null"
 
@@ -389,9 +279,9 @@ database:
 
 **解决方案：**
 1. 确保所有子服的 `config.yml` 中数据库配置**完全一致**：
-   - `host` 地址相同
-   - `database` 名称相同
-   - `user` 和 `password` 相同
+    - `host` 地址相同
+    - `database` 名称相同
+    - `user` 和 `password` 相同
 2. 重启所有子服
 3. 验证数据库中只有一个 `onlineTime` 表
 
@@ -421,70 +311,7 @@ database:
 
 ---
 
-## 7. 故障排查
-
-### 7.1 检查插件是否加载
-
-```bash
-# 在服务器控制台执行
-/plugins
-```
-
-**正常输出：**
-```
-Plugins (2): PlaceholderAPI, OnlineTime
-```
-
-**如果插件显示为红色：**
-1. 检查 Java 版本（需要 Java 8+）
-2. 查看日志文件：`logs/latest.log`
-3. 确认前置插件 PlaceholderAPI 已安装
-
----
-
-### 7.2 检查数据库连接
-
-**方法 1：查看日志**
-```bash
-# 在 logs/latest.log 中搜索
-grep -i "database" logs/latest.log
-```
-
-**方法 2：手动测试连接**
-```bash
-mysql -h localhost -u root -p
-# 输入密码后执行：
-SHOW DATABASES;
-USE minecraft;
-SHOW TABLES;
-```
-
-**预期结果：**
-```sql
-Tables_in_minecraft
--------------------
-onlineTime
-```
-
-**查看表结构：**
-```sql
-DESC onlineTime;
-```
-
-**预期输出：**
-```
-+--------+-------------+------+-----+---------+-------+
-| Field  | Type        | Null | Key | Default | Extra |
-+--------+-------------+------+-----+---------+-------+
-| uuid   | varchar(36) | NO   | PRI | NULL    |       |
-| time   | varchar(10) | NO   | PRI | NULL    |       |
-| second | int(11)     | NO   |     | 0       |       |
-+--------+-------------+------+-----+---------+-------+
-```
-
----
-
-### 7.3 调试占位符
+### 5.3 调试占位符
 
 **使用 PlaceholderAPI 调试命令：**
 ```bash
@@ -505,32 +332,9 @@ null                    → 缓存未加载，重新登录
 
 ---
 
-### 7.4 性能监控
+## 高级配置
 
-**查看定时任务性能（Paper 服务端）：**
-```bash
-/timings report
-```
-
-**正常范围：**
-- OnlineTime 任务执行时间：< 10ms
-- 如果超过 50ms，检查数据库延迟
-
-**查看数据库性能：**
-```sql
--- 查看慢查询日志
-SHOW VARIABLES LIKE 'slow_query_log';
-
--- 开启慢查询日志
-SET GLOBAL slow_query_log = 'ON';
-SET GLOBAL long_query_time = 0.5;  -- 超过 0.5 秒的查询会被记录
-```
-
----
-
-## 8. 高级配置
-
-### 8.1 数据库性能优化
+### 6.1 数据库性能优化
 
 **创建索引（提升查询速度）：**
 ```sql
@@ -557,7 +361,7 @@ query_cache_size = 64M
 query_cache_type = 1
 ```
 
-### 8.2 数据备份
+### 6.2 数据备份
 
 **定时备份脚本：**
 ```bash
@@ -575,12 +379,12 @@ crontab -e
 
 ---
 
-## 9. 支持与反馈
+## 支持与反馈
 
 **遇到问题？**
 1. 查看 [常见问题](#6-常见问题)
 2. 查看 [故障排查](#7-故障排查)
-3. 提交 Issue：[GitHub Issues](https://github.com/yourusername/OnlineTime/issues)
+3. 提交 Issue：[GitHub Issues](https://github.com/rugeovo/OnlineTime/issues)
 
 **提交 Issue 时请提供：**
 - 服务端类型和版本（如 Paper 1.20.4）
@@ -590,6 +394,3 @@ crontab -e
 - 是否为群组服环境
 
 ---
-
-**"Good software, like good wine, takes time."**
-*— Joel Spolsky*
